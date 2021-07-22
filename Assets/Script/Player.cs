@@ -4,10 +4,9 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    //moving float
-    //jumping
-    //direction
     private CharacterController _controller;
+
+    private Animator _anim;
 
     [SerializeField]
     private float _speed = 3f;
@@ -16,12 +15,15 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float _gravity = 1f;
 
+    private bool _jumping = false;
+
     private Vector3 _movement;
 
     // Start is called before the first frame update
     void Start()
     {
         _controller = GetComponent<CharacterController>();
+        _anim = GetComponentInChildren<Animator>();
     }
 
     // Update is called once per frame
@@ -29,11 +31,29 @@ public class Player : MonoBehaviour
     {
         if (_controller.isGrounded == true)
         {
-            float horiMoving = Input.GetAxis("Horizontal");
+            float horiMoving = Input.GetAxisRaw("Horizontal");
             _movement = new Vector3(0, 0, horiMoving);
+            _anim.SetFloat("Speed", Mathf.Abs(horiMoving));
+
+            if (horiMoving != 0)
+            {
+                Vector3 facing = transform.localEulerAngles;
+                facing.y = _movement.z > 0 ? 0 : 180;
+                transform.localEulerAngles = facing;
+            }
+
+            if (_jumping)
+            {
+                _jumping = false;
+                _anim.SetBool("Jumping", _jumping);
+            }
+
+            _anim.SetBool("Jumping", false);
             if(Input.GetKeyDown(KeyCode.Space))
             {
                 _movement.y += _jumpHeight;
+                _jumping = true;
+                _anim.SetBool("Jumping", _jumping);
             }
         }
         else
