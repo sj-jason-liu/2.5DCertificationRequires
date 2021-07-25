@@ -6,6 +6,8 @@ public class Ledge : MonoBehaviour
 {
     [SerializeField]
     private Vector3 _handPos, _standPos;
+    [SerializeField]
+    private GameObject _posHand, _posStand;
     
     private void OnTriggerEnter(Collider other)
     {
@@ -15,13 +17,13 @@ public class Ledge : MonoBehaviour
 
             if(player != null)
             {
-                player.GrabLedge(_handPos, this);
+                player.GrabLedge(_posHand.transform.position, this);
             }
         }
     }
 
     public Vector3 GetStandPos()
     {
-        return _standPos;
+        return _posStand.transform.position;
     }
 }
