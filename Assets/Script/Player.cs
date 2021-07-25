@@ -22,6 +22,9 @@ public class Player : MonoBehaviour
 
     private Vector3 _movement;
 
+    [SerializeField]
+    private GameObject _model;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -53,9 +56,9 @@ public class Player : MonoBehaviour
 
             if (horiMoving != 0)
             {
-                Vector3 facing = transform.localEulerAngles;
+                Vector3 facing = _model.transform.localEulerAngles;
                 facing.y = _movement.z > 0 ? 0 : 180;
-                transform.localEulerAngles = facing;
+                _model.transform.localEulerAngles = facing;
             }
 
             if (_jumping)
