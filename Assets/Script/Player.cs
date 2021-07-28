@@ -8,6 +8,8 @@ public class Player : MonoBehaviour
 
     private Animator _anim;
 
+    private int _coin;
+
     [SerializeField]
     private float _speed = 3f;
     [SerializeField]
@@ -99,5 +101,11 @@ public class Player : MonoBehaviour
         _anim.SetBool("GrabLedge", false);
         _controller.enabled = true;
         _onLedge = false;
+    }
+
+    public void AddCoin()
+    {
+        _coin++;
+        UIManager.Instance.CoinUpdate(_coin);
     }
 }
