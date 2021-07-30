@@ -16,11 +16,15 @@ public class Player : MonoBehaviour
     private float _jumpHeight = 15f;
     [SerializeField]
     private float _gravity = 1f;
+    private float vertiMoving;
 
     private bool _jumping = false;
     private bool _onLedge = false;
+    private bool _onLadder = false;
 
     private Ledge _activeLedge;
+
+    private Ladder _activeLadder;
 
     private Vector3 _movement;
 
@@ -77,6 +81,12 @@ public class Player : MonoBehaviour
                 _anim.SetBool("Jumping", _jumping);
             }
         }
+        else if(_onLadder)
+        {
+            vertiMoving = Input.GetAxisRaw("Vertical");
+            _movement = new Vector3(0, vertiMoving, 0);
+            _anim.SetFloat("VertiSpeed", vertiMoving);
+        }
         else
         {
             _movement.y -= _gravity * Time.deltaTime;
@@ -101,6 +111,27 @@ public class Player : MonoBehaviour
         _anim.SetBool("GrabLedge", false);
         _controller.enabled = true;
         _onLedge = false;
+    }
+
+    public void ReachedLadder()
+    {
+        _onLadder = !_onLadder;
+        _anim.SetBool("ReachedLadder", _onLadder);
+    }
+
+    public void ClimbUpLadder(Ladder currentLadder)
+    {
+        _anim.SetTrigger("ClimbUpLadder");
+        _controller.enabled = false;
+        _activeLadder = currentLadder;
+    }
+
+    public void LadderComplete()
+    {
+        transform.position = _activeLadder.GetStandPos();
+        _anim.SetBool("ReachedLadder", false);
+        _controller.enabled = true;
+        _onLadder = false;
     }
 
     public void AddCoin()
