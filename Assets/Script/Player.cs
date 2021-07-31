@@ -78,7 +78,6 @@ public class Player : MonoBehaviour
                 _anim.SetBool("Jumping", _jumping);
             }
 
-            _anim.SetBool("Jumping", false);
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 _movement.y += _jumpHeight;
@@ -154,7 +153,7 @@ public class Player : MonoBehaviour
         }
         else
         {
-            //transform.position = _finishRollPosL.transform.position;
+            transform.position = _finishRollPosL.transform.position;
         }        
         _controller.enabled = true;
     }
