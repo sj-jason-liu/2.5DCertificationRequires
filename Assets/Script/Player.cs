@@ -29,7 +29,7 @@ public class Player : MonoBehaviour
     private Vector3 _movement;
 
     [SerializeField]
-    private GameObject _model;
+    private GameObject _model, _finishRollPosR, _finishRollPosL;
 
     // Start is called before the first frame update
     void Start()
@@ -65,6 +65,11 @@ public class Player : MonoBehaviour
                 Vector3 facing = _model.transform.localEulerAngles;
                 facing.y = _movement.z > 0 ? 0 : 180;
                 _model.transform.localEulerAngles = facing;
+                if(Input.GetKeyDown(KeyCode.LeftShift))
+                {
+                    _anim.SetTrigger("Rolling");
+                    _controller.enabled = false;
+                }
             }
 
             if (_jumping)
@@ -128,10 +133,30 @@ public class Player : MonoBehaviour
 
     public void LadderComplete()
     {
-        transform.position = _activeLadder.GetStandPos();
+        if(_model.transform.localEulerAngles.y < 60)
+        {
+            transform.position = _activeLadder.GetStandPosR();
+        }
+        else
+        {
+            transform.position = _activeLadder.GetStandPosL();
+        }
         _anim.SetBool("ReachedLadder", false);
         _controller.enabled = true;
         _onLadder = false;
+    }
+
+    public void RollComplete()
+    {
+        if(_model.transform.localEulerAngles.y < 60)
+        {
+            transform.position = _finishRollPosR.transform.position;
+        }
+        else
+        {
+            //transform.position = _finishRollPosL.transform.position;
+        }        
+        _controller.enabled = true;
     }
 
     public void AddCoin()

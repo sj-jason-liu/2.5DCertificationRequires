@@ -5,9 +5,8 @@ using UnityEngine;
 public class Ladder : MonoBehaviour
 {
     [SerializeField]
-    private GameObject _standPos;
-    //if triggerenter with player
-    //call reached ladder method from player
+    private GameObject _standPosR, _standPosL;
+
     private void OnTriggerEnter(Collider other)
     {
         if(other.tag == "Player")
@@ -32,8 +31,13 @@ public class Ladder : MonoBehaviour
         }
     }
 
-    public Vector3 GetStandPos()
+    public Vector3 GetStandPosR()
     {
-        return _standPos.transform.position;
+        return _standPosR.transform.position;
+    }
+
+    public Vector3 GetStandPosL()
+    {
+        return _standPosL.transform.position;
     }
 }
